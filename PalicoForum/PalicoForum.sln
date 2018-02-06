@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalicoForum", "PalicoForum\PalicoForum.csproj", "{054C55C8-B6A1-4BB3-B64F-93802F1B236A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalicoForum", "PalicoForum\PalicoForum.csproj", "{3965A14C-BDBA-48E9-AF78-1DF9C4C20333}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{054C55C8-B6A1-4BB3-B64F-93802F1B236A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{054C55C8-B6A1-4BB3-B64F-93802F1B236A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{054C55C8-B6A1-4BB3-B64F-93802F1B236A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{054C55C8-B6A1-4BB3-B64F-93802F1B236A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3965A14C-BDBA-48E9-AF78-1DF9C4C20333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3965A14C-BDBA-48E9-AF78-1DF9C4C20333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3965A14C-BDBA-48E9-AF78-1DF9C4C20333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3965A14C-BDBA-48E9-AF78-1DF9C4C20333}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {04F12739-7F9E-4627-B010-5F3BE41F29B3}
+		SolutionGuid = {BBF5E02F-799A-442A-9E6E-95C1058A7004}
 	EndGlobalSection
 EndGlobal
