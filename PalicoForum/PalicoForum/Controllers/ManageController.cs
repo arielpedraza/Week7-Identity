@@ -22,7 +22,6 @@ namespace PalicoForum.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
 
@@ -37,7 +36,6 @@ namespace PalicoForum.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
         }
@@ -104,7 +102,7 @@ namespace PalicoForum.Controllers
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
         }
-
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
@@ -128,7 +126,7 @@ namespace PalicoForum.Controllers
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToAction(nameof(Index));
         }
-
+        */
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
@@ -305,7 +303,7 @@ namespace PalicoForum.Controllers
             StatusMessage = "The external login was removed.";
             return RedirectToAction(nameof(ExternalLogins));
         }
-
+        /*
         [HttpGet]
         public async Task<IActionResult> TwoFactorAuthentication()
         {
@@ -463,7 +461,7 @@ namespace PalicoForum.Controllers
 
             return View(model);
         }
-
+        */
         #region Helpers
 
         private void AddErrors(IdentityResult result)
