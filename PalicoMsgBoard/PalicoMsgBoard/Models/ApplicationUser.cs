@@ -12,10 +12,4 @@ namespace PalicoMsgBoard.Models
         public string Name { get; set; }
         public int HuntersId { get; set; }
     }
-
-    public static class AppRoles
-    {
-        public const string Palico = "Palico";
-        public const string Hunter = "Hunter";
-    }
 }

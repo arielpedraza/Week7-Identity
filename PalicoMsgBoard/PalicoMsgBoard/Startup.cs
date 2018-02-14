@@ -69,17 +69,24 @@ namespace PalicoMsgBoard
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             
-            roleManager.CreateAsync(new IdentityRole
+            var x = roleManager.RoleExistsAsync(AppRoles.Palico);
+            x.Wait();
+            if (!x.Result)
             {
-                Name = AppRoles.Palico,
-                NormalizedName = AppRoles.Palico
-            }).Wait();
+                var a = roleManager.CreateAsync(new IdentityRole
+                {
+                    Name = AppRoles.Palico,
+                    NormalizedName = AppRoles.Palico
+                });
+                a.Wait();
 
-            roleManager.CreateAsync(new IdentityRole
-            {
-                Name = AppRoles.Hunter,
-                NormalizedName = AppRoles.Hunter
-            }).Wait();
+                a = roleManager.CreateAsync(new IdentityRole
+                {
+                    Name = AppRoles.Hunter,
+                    NormalizedName = AppRoles.Hunter
+                });
+                a.Wait();
+            }
         }
     }
 }
