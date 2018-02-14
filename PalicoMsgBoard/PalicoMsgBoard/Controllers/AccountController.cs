@@ -65,7 +65,8 @@ namespace PalicoMsgBoard.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Messages");
+                    // return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
