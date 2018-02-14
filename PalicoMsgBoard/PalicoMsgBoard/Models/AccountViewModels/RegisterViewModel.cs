@@ -4,14 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MH_Forum.Models.AccountViewModels
+namespace PalicoMsgBoard.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

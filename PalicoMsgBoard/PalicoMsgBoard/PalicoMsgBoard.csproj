@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>aspnet-MH_Forum-D93D9084-2E71-4990-939B-B113EF0FF6BA</UserSecretsId>
-    <StartupObject></StartupObject>
-    <ApplicationIcon></ApplicationIcon>
+    <UserSecretsId>aspnet-PalicoMsgBoard-A2DBB44A-BF66-45A9-9EF4-C5BB0A9F8AFC</UserSecretsId>
   </PropertyGroup>
 
 
