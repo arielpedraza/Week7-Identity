@@ -40,7 +40,7 @@ namespace PalicoMsgBoard
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -63,6 +63,18 @@ namespace PalicoMsgBoard
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
+            roleManager.CreateAsync(new IdentityRole
+            {
+                Name = AppRoles.Palico,
+                NormalizedName = AppRoles.Palico
+            }).Wait();
+
+            roleManager.CreateAsync(new IdentityRole
+            {
+                Name = AppRoles.Hunter,
+                NormalizedName = AppRoles.Hunter
+            }).Wait();
         }
     }
 }
