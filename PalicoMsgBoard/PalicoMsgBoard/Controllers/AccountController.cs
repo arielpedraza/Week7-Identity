@@ -220,11 +220,18 @@ namespace PalicoMsgBoard.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    Claim name = new Claim(ClaimTypes.Name, model.Name, ClaimValueTypes.String);
+                    Claim email = new Claim(ClaimTypes.Email, model.Email, ClaimValueTypes.String);
+                    List<Claim> claims = new List<Claim> { name, email };
+                    await _userManager.AddClaimsAsync(user, claims);
+
+                    await _userManager.AddToRoleAsync(user, AppRoles.Palico);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
