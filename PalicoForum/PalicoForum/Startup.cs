@@ -44,9 +44,6 @@ namespace PalicoForum
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
-
             // Enables MVC architecture as well as Razor pages.
             services.AddMvc();
         }

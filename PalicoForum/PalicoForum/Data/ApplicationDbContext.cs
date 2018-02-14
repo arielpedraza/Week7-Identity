@@ -33,5 +33,11 @@ namespace PalicoForum.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        /// <summary>
+        /// Example of Polymorphism. Can customize the model by overriding the defaults like changing table names.
+        /// </summary>
+        /// <param name="builder">Model Builder variable to call helper methods on.</param>
+        public DbSet<Message> Messages { get; set; }
     }
 }

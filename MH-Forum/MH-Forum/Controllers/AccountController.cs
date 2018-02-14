@@ -10,44 +10,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PalicoForum.Models;
-using PalicoForum.Models.AccountViewModels;
-using PalicoForum.Services;
+using MH_Forum.Models;
+using MH_Forum.Models.AccountViewModels;
+using MH_Forum.Services;
 
-namespace PalicoForum.Controllers
+namespace MH_Forum.Controllers
 {
-    // Requires authentication to access
     [Authorize]
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        // Backing variables set in constructor
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
-        /// <summary>
-        /// Constructor method
-        /// </summary>
-        /// <param name="userManager">for managing user persistance</param>
-        /// <param name="signInManager">for managing sign in procedures</param>
-        /// <param name="logger">used to log events</param>
-        public AccountController(UserManager<ApplicationUser> userManager, 
-                                 SignInManager<ApplicationUser> signInManager,
-                                 IEmailSender emailSender,
-                                 ILogger<AccountController> logger)
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IEmailSender emailSender,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
             _logger = logger;
         }
 
-        // Property gets cleared once it is accessed.
         [TempData]
         public string ErrorMessage { get; set; }
 
         [HttpGet]
-        // overrides authentication requirement of class to allow non logged in users
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
@@ -74,10 +67,10 @@ namespace PalicoForum.Controllers
                     _logger.LogInformation("User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
-                //if (result.RequiresTwoFactor)
-                //{
-                //    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                //}
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                }
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -93,7 +86,7 @@ namespace PalicoForum.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        /*
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
@@ -203,7 +196,7 @@ namespace PalicoForum.Controllers
                 return View();
             }
         }
-        */
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Lockout()
@@ -233,8 +226,9 @@ namespace PalicoForum.Controllers
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
@@ -373,8 +367,12 @@ namespace PalicoForum.Controllers
                     return RedirectToAction(nameof(ForgotPasswordConfirmation));
                 }
 
+                // For more information on how to enable account confirmation and password reset please
+                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 
