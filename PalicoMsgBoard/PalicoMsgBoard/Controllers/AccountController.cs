@@ -16,7 +16,7 @@ using PalicoMsgBoard.Services;
 
 namespace PalicoMsgBoard.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "RequireAccount")]
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
@@ -214,9 +214,53 @@ namespace PalicoMsgBoard.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Palico")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    Claim name = new Claim(ClaimTypes.Name, model.Name, ClaimValueTypes.String);
+                    Claim email = new Claim(ClaimTypes.Email, model.Email, ClaimValueTypes.String);
+                    List<Claim> claims = new List<Claim> { name, email };
+                    await _userManager.AddClaimsAsync(user, claims);
+
+                    await _userManager.AddToRoleAsync(user, AppRoles.Palico);
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterAdmin(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Hunter")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterAdmin(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
