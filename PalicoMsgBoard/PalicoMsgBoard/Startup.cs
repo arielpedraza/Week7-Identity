@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PalicoMsgBoard.Data;
 using PalicoMsgBoard.Models;
 using PalicoMsgBoard.Services;
+using PalicoMsgBoard.Models.Interfaces;
 
 namespace PalicoMsgBoard
 {
@@ -35,6 +36,7 @@ namespace PalicoMsgBoard
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IMessageService, MessageService>();
 
             services.AddMvc();
 
