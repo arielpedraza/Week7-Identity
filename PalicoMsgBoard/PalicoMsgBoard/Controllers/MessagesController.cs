@@ -63,6 +63,7 @@ namespace PalicoMsgBoard.Controllers
         {
             if (ModelState.IsValid)
             {
+                message.AuthorId = User.Identity.Name;
                 _context.Add(message);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

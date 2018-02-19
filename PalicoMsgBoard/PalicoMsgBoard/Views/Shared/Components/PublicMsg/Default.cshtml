@@ -1,4 +1,22 @@
-﻿@foreach(Message m in Model)
-{
-    <p>@m.AuthorId - @m.Text</p>
-}
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Recent Public Messages
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Message m in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => m.AuthorId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => m.Text)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
