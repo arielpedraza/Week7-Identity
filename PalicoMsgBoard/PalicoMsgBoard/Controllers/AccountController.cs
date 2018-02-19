@@ -214,7 +214,7 @@ namespace PalicoMsgBoard.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Palico")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
@@ -240,7 +240,7 @@ namespace PalicoMsgBoard.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index","Messages");
                 }
                 AddErrors(result);
             }
@@ -258,7 +258,7 @@ namespace PalicoMsgBoard.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Hunter")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterAdmin(RegisterViewModel model, string returnUrl = null)
         {
@@ -276,7 +276,7 @@ namespace PalicoMsgBoard.Controllers
                     List<Claim> claims = new List<Claim> { name, email };
                     await _userManager.AddClaimsAsync(user, claims);
 
-                    await _userManager.AddToRoleAsync(user, AppRoles.Palico);
+                    await _userManager.AddToRoleAsync(user, AppRoles.Hunter);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
@@ -284,7 +284,7 @@ namespace PalicoMsgBoard.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Messages");
                 }
                 AddErrors(result);
             }
